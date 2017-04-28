@@ -1,0 +1,99 @@
+{% extends "index.html" %} 
+{% block head %}
+<link href="/css/danh-sach-style.css" rel="stylesheet"> 
+{% endblock %} 
+{% block content %}
+<section class="container" id="list-page">
+	<div class="row mot-hang">
+		<a href="/phu-kien" class="big-title">PHỤ KIỆN</a>
+		<span></span>
+	</div>
+	<!-- end -row -->
+	<!-- THANH TIÊU ĐỀ //////////////////////////////////////////////////////////////////////// -->
+	<div class="row">
+		<aside class="col-md-3 list-menu-box">
+			<ul>
+				<li class="menu-box"><span class="title-list sap-xep-title">SẮP XẾP</span>
+					<ul class="sap-xep">
+						<li><a href="/dien-thoai/?order=newest">Mới nhất</a></li>
+						<li><a href="/dien-thoai/?order=hotest">Bán chạy nhất</a></li>
+						<li><a href="/dien-thoai/?order=lowtohigh">Gía: thấp -> cao</a></li>
+						<li><a href="/dien-thoai/?order=hightolow">Giá: cao -> thấp</a></li>
+						<!--<li><a href="/dien-thoai/?order=promotion">Khuyến mại</a></li>-->
+					</ul>
+				</li>
+				<li class="menu-box"><span class="title-list nhan-hieu-title">HÃNG SẢN XUẤT</span>
+					<ul class="nhan-hieu">
+						<li><a href="/hang-dien-thoai/apple">APPLE</a></li>
+						<li><a href="/hang-dien-thoai/samsung">SAMSUNG</a></li>
+						<li><a href="/hang-dien-thoai/oppo">OPPO</a></li>
+						<li><a href="/hang-dien-thoai/cac-hang-khac">Các hãng khác</a></li>
+					</ul>
+				</li>
+				<li class="menu-box"><span class="title-list gia-tien-title">GIÁ TIỀN</span>
+					<ul class="gia-tien">
+						<li><a href="/dien-thoai/?gia=den5">Dưới 5 Triệu</a></li>
+						<li><a href="/dien-thoai/?gia=5den10">Từ 5 đến 10 triệu</a></li>
+						<li><a href="/dien-thoai/?gia=10den15">Từ 10 đến 15 triệu</a></li>
+						<li><a href="/dien-thoai/?gia=tren15">Trên 15 triệu</a></li>
+					</ul>
+				</li>
+			</ul>
+		</aside>
+		<!-- end list-menu-box -->
+		<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+		<div class="col-md-9 col-sm-6 product-3">
+
+			{% for each in products %}
+			<div class="col-md-4 col-sm-6">
+				<div class="product-box ph">
+					<img src="/images/phukien/{{each.product_id}}_0.jpg">
+					<div class="name-price">
+						<p class="name-product">{{ each.product_name }}</p>
+						<p class="price-product">{{ each.price }} VNĐ</p>
+						<div class="info-product info-ph">
+							<div>
+								<p>{{ each.product_name }}</p>
+								<p>{{ each.price }} VNĐ</p>
+							</div>
+							<a href="/phu-kien/{{each.product_id}}" class="watch">Xem chi tiết</a>
+							<span class="buy">Mua hàng</span>
+							<span class="buy added">Đã thêm vào giỏ hàng</span>
+						</div>
+						<!-- end info-box -->
+					</div>
+					<!-- end name-price -->
+				</div>
+				<!-- end product-box -->
+			</div>
+			{% endfor %}
+
+		</div>
+		<!-- end col -->
+		<!-- HẾT CỘT NÀY RỒI  //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+		<div class="col-md-12 pagination-box">
+			<ul class="pagination">
+					<li><a href="?page=1" {% if (pageCurrent < 1) %} class="noclick" {% endif %}>Trang đầu</a></li>
+					{% for i in range(1, allpage + 1) %}
+						{% if (pageCurrent > 0) %}
+							<li 3 {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{ i }}">{{ i }}</a></li>
+						{% elif (i === 1) %}
+							<li 1 class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+						{% else %}
+							<li 2><a href="?page={{ i }}">{{ i }}</a></li>
+						{% endif %}
+					{% endfor %}
+					<li><a href="?page={{ allpage }}">Trang cuối</a></li>
+				  </ul>
+		</div>
+		<!-- end col -->
+		<!-- end col -->
+
+	</div>
+	<!-- end row -->
+
+</section>
+{% endblock %}

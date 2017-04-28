@@ -1,0 +1,533 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: bill; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE bill (
+    bill_id text NOT NULL,
+    user_id text,
+    payment_id text,
+    founded_date time with time zone,
+    quantity integer,
+    total_cost text,
+    status text
+);
+
+
+ALTER TABLE bill OWNER TO postgres;
+
+--
+-- Name: contact_feedback; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE contact_feedback (
+    contact_feedback_id text NOT NULL,
+    title text,
+    content text,
+    contact_feedback_date time with time zone,
+    status text
+);
+
+
+ALTER TABLE contact_feedback OWNER TO postgres;
+
+--
+-- Name: detailed_bill; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE detailed_bill (
+    detailed_bill_id text NOT NULL,
+    product_id text,
+    quantity integer,
+    prire text,
+    total_cost text,
+    status text
+);
+
+
+ALTER TABLE detailed_bill OWNER TO postgres;
+
+--
+-- Name: detailed_orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE detailed_orders (
+    detailed_orders_id text NOT NULL,
+    product_id text,
+    quantity integer,
+    prire text,
+    status text
+);
+
+
+ALTER TABLE detailed_orders OWNER TO postgres;
+
+--
+-- Name: field; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE field (
+    field_id text NOT NULL,
+    name text,
+    type text,
+    description text,
+    valodation text,
+    required text,
+    field_section_id text
+);
+
+
+ALTER TABLE field OWNER TO postgres;
+
+--
+-- Name: field_section; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE field_section (
+    field_section_id text NOT NULL,
+    name text,
+    product_template_id text
+);
+
+
+ALTER TABLE field_section OWNER TO postgres;
+
+--
+-- Name: image; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE image (
+    image_id text NOT NULL,
+    url_image text,
+    product_id text
+);
+
+
+ALTER TABLE image OWNER TO postgres;
+
+--
+-- Name: manufacturer; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE manufacturer (
+    manufacturer_id text NOT NULL,
+    name text
+);
+
+
+ALTER TABLE manufacturer OWNER TO postgres;
+
+--
+-- Name: news; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE news (
+    news_id text NOT NULL,
+    title text,
+    post_date time with time zone,
+    content text
+);
+
+
+ALTER TABLE news OWNER TO postgres;
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE orders (
+    orders_id text NOT NULL,
+    user_id text,
+    order_date date,
+    delivery_date date,
+    receiver_name text,
+    gender text,
+    phone_number integer,
+    email text,
+    address text,
+    note text,
+    status text
+);
+
+
+ALTER TABLE orders OWNER TO postgres;
+
+--
+-- Name: payment; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE payment (
+    payment_id text NOT NULL,
+    payment_method text
+);
+
+
+ALTER TABLE payment OWNER TO postgres;
+
+--
+-- Name: product; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE product (
+    product_id text NOT NULL,
+    product_name text,
+    manufacturer_id text,
+    product_template_id text,
+    price text,
+    quantity text,
+    sales_volume text,
+    description text,
+    properties json,
+    promotion text,
+    store_date time with time zone,
+    status text
+);
+
+
+ALTER TABLE product OWNER TO postgres;
+
+--
+-- Name: product_template; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE product_template (
+    product_template_id text NOT NULL,
+    name text
+);
+
+
+ALTER TABLE product_template OWNER TO postgres;
+
+--
+-- Name: product_type; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE product_type (
+    product_type_id text NOT NULL,
+    name text,
+    parent text
+);
+
+
+ALTER TABLE product_type OWNER TO postgres;
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "user" (
+    user_id text NOT NULL,
+    account text,
+    password text,
+    name text,
+    gender text,
+    phone_number integer,
+    birthday date,
+    email text,
+    address text,
+    registration_date date,
+    role text
+);
+
+
+ALTER TABLE "user" OWNER TO postgres;
+
+--
+-- Data for Name: bill; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY bill (bill_id, user_id, payment_id, founded_date, quantity, total_cost, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: contact_feedback; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY contact_feedback (contact_feedback_id, title, content, contact_feedback_date, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: detailed_bill; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detailed_bill (detailed_bill_id, product_id, quantity, prire, total_cost, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: detailed_orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY detailed_orders (detailed_orders_id, product_id, quantity, prire, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: field; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY field (field_id, name, type, description, valodation, required, field_section_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: field_section; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY field_section (field_section_id, name, product_template_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: image; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY image (image_id, url_image, product_id) FROM stdin;
+I01	P8.jpg	SP01
+I02	p4.jpg	SP02
+I03	p10.jpg	SP03
+I04	p3.jpg	SP04
+I05	p2.jpg	SP05
+I06	p11.jpg	SP06
+\.
+
+
+--
+-- Data for Name: manufacturer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY manufacturer (manufacturer_id, name) FROM stdin;
+H02	SAMSUNG
+H03	OPPO
+H04	SONY
+H05	ASUS
+H06	HTC
+H01	APPLE
+H07	LENOVO
+\.
+
+
+--
+-- Data for Name: news; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY news (news_id, title, post_date, content) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY orders (orders_id, user_id, order_date, delivery_date, receiver_name, gender, phone_number, email, address, note, status) FROM stdin;
+\.
+
+
+--
+-- Data for Name: payment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY payment (payment_id, payment_method) FROM stdin;
+\.
+
+
+--
+-- Data for Name: product; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY product (product_id, product_name, manufacturer_id, product_template_id, price, quantity, sales_volume, description, properties, promotion, store_date, status) FROM stdin;
+SP02	IPHONE7 PLUS 256GB	APPLE	M01	22.290.000	12	20		{"Màn hình":{"Công nghệ màn hình":"Công nghệ màn hình","Độ phân giải":"Full HD (1080 x 1920 pixels)","Màn hình rộng":"5.5","Mặt kính cảm ứng":"Kính oleophobic (ion cường lực)"},"Camera sau":{"Độ phân giải":"Hai camera 12 MP","Quay phim":"4K 2160p@30fps","Đèn Flash":"4 đèn LED (2 tông màu)","Chụp ảnh nâng cao":"Chạm lấy nét, Panorama, Chống rung quang học (OIS), Tự động lấy nét, Nhận diện khuôn mặt, HDR"},"Camera trước":{"Độ phân giải":"7 MP","Videocall":"Hỗ trợ VideoCall thông qua ứng dụng OTT","Thông tin khác":"Nhận diện khuôn mặt, Quay video Full HD, Tự động lấy nét, Selfie ngược sáng HDR"},"Hệ điều hành - CPU":{"Hệ điều hành":"iOS 10","Chipset (hãng SX CPU)":"Apple A10 Fusion 4 nhân 64-bit","Tốc độ CPU":"2.3 GHz","Chip đồ họa (GPU)":"PowerVR Series7XT Plus"},"Bộ nhớ & Lưu trữ":{"RAM":"3 GB","Bộ nhớ trong":"256 GB","Bộ nhớ còn lại (khả dụng)":"Khoảng 247.52 GB","Thẻ nhớ ngoài":"Không"},"Kết nối":{"Mạng di động":"3G, 4G LTE Cat 9","SIM":"1 Nano SIM","Wifi":"Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot","GPS":"A-GPS, GLONASS","Bluetooth":"A2DP, LE, v4.2","Cổng kết nối/sạc":"Lightning","Jack tai nghe":"Không","Kết nối khác":"NFC, Air Play, HDMI, OTG"}}		09:00:00+00	
+SP03	IPHONE7 PLUS 256GB	APPLE	M01	22.290.000	12	20		{"Màn hình":{"Công nghệ màn hình":"Công nghệ màn hình","Độ phân giải":"Full HD (1080 x 1920 pixels)","Màn hình rộng":"5.5","Mặt kính cảm ứng":"Kính oleophobic (ion cường lực)"},"Camera sau":{"Độ phân giải":"Hai camera 12 MP","Quay phim":"4K 2160p@30fps","Đèn Flash":"4 đèn LED (2 tông màu)","Chụp ảnh nâng cao":"Chạm lấy nét, Panorama, Chống rung quang học (OIS), Tự động lấy nét, Nhận diện khuôn mặt, HDR"},"Camera trước":{"Độ phân giải":"7 MP","Videocall":"Hỗ trợ VideoCall thông qua ứng dụng OTT","Thông tin khác":"Nhận diện khuôn mặt, Quay video Full HD, Tự động lấy nét, Selfie ngược sáng HDR"},"Hệ điều hành - CPU":{"Hệ điều hành":"iOS 10","Chipset (hãng SX CPU)":"Apple A10 Fusion 4 nhân 64-bit","Tốc độ CPU":"2.3 GHz","Chip đồ họa (GPU)":"PowerVR Series7XT Plus"},"Bộ nhớ & Lưu trữ":{"RAM":"3 GB","Bộ nhớ trong":"256 GB","Bộ nhớ còn lại (khả dụng)":"Khoảng 247.52 GB","Thẻ nhớ ngoài":"Không"},"Kết nối":{"Mạng di động":"3G, 4G LTE Cat 9","SIM":"1 Nano SIM","Wifi":"Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot","GPS":"A-GPS, GLONASS","Bluetooth":"A2DP, LE, v4.2","Cổng kết nối/sạc":"Lightning","Jack tai nghe":"Không","Kết nối khác":"NFC, Air Play, HDMI, OTG"}}		09:00:00+00	
+SP04	IPHONE7 PLUS 256GB	APPLE	M01	22.290.000	12	20		{"Màn hình":{"Công nghệ màn hình":"Công nghệ màn hình","Độ phân giải":"Full HD (1080 x 1920 pixels)","Màn hình rộng":"5.5","Mặt kính cảm ứng":"Kính oleophobic (ion cường lực)"},"Camera sau":{"Độ phân giải":"Hai camera 12 MP","Quay phim":"4K 2160p@30fps","Đèn Flash":"4 đèn LED (2 tông màu)","Chụp ảnh nâng cao":"Chạm lấy nét, Panorama, Chống rung quang học (OIS), Tự động lấy nét, Nhận diện khuôn mặt, HDR"},"Camera trước":{"Độ phân giải":"7 MP","Videocall":"Hỗ trợ VideoCall thông qua ứng dụng OTT","Thông tin khác":"Nhận diện khuôn mặt, Quay video Full HD, Tự động lấy nét, Selfie ngược sáng HDR"},"Hệ điều hành - CPU":{"Hệ điều hành":"iOS 10","Chipset (hãng SX CPU)":"Apple A10 Fusion 4 nhân 64-bit","Tốc độ CPU":"2.3 GHz","Chip đồ họa (GPU)":"PowerVR Series7XT Plus"},"Bộ nhớ & Lưu trữ":{"RAM":"3 GB","Bộ nhớ trong":"256 GB","Bộ nhớ còn lại (khả dụng)":"Khoảng 247.52 GB","Thẻ nhớ ngoài":"Không"},"Kết nối":{"Mạng di động":"3G, 4G LTE Cat 9","SIM":"1 Nano SIM","Wifi":"Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot","GPS":"A-GPS, GLONASS","Bluetooth":"A2DP, LE, v4.2","Cổng kết nối/sạc":"Lightning","Jack tai nghe":"Không","Kết nối khác":"NFC, Air Play, HDMI, OTG"}}		09:00:00+00	
+SP05	IPHONE7 PLUS 256GB	APPLE	M01	22.290.000	12	20		{"Màn hình":{"Công nghệ màn hình":"Công nghệ màn hình","Độ phân giải":"Full HD (1080 x 1920 pixels)","Màn hình rộng":"5.5","Mặt kính cảm ứng":"Kính oleophobic (ion cường lực)"},"Camera sau":{"Độ phân giải":"Hai camera 12 MP","Quay phim":"4K 2160p@30fps","Đèn Flash":"4 đèn LED (2 tông màu)","Chụp ảnh nâng cao":"Chạm lấy nét, Panorama, Chống rung quang học (OIS), Tự động lấy nét, Nhận diện khuôn mặt, HDR"},"Camera trước":{"Độ phân giải":"7 MP","Videocall":"Hỗ trợ VideoCall thông qua ứng dụng OTT","Thông tin khác":"Nhận diện khuôn mặt, Quay video Full HD, Tự động lấy nét, Selfie ngược sáng HDR"},"Hệ điều hành - CPU":{"Hệ điều hành":"iOS 10","Chipset (hãng SX CPU)":"Apple A10 Fusion 4 nhân 64-bit","Tốc độ CPU":"2.3 GHz","Chip đồ họa (GPU)":"PowerVR Series7XT Plus"},"Bộ nhớ & Lưu trữ":{"RAM":"3 GB","Bộ nhớ trong":"256 GB","Bộ nhớ còn lại (khả dụng)":"Khoảng 247.52 GB","Thẻ nhớ ngoài":"Không"},"Kết nối":{"Mạng di động":"3G, 4G LTE Cat 9","SIM":"1 Nano SIM","Wifi":"Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot","GPS":"A-GPS, GLONASS","Bluetooth":"A2DP, LE, v4.2","Cổng kết nối/sạc":"Lightning","Jack tai nghe":"Không","Kết nối khác":"NFC, Air Play, HDMI, OTG"}}		09:00:00+00	
+SP01	Điện thoại iPhone 7 Plus 256GB	iPhone	M01	24.990.000	12	20		{"Camera trước":{"Videocall":"Hỗ trợ VideoCall thông qua ứng dụng OTT","Thông tin khác":"Nhận diện khuôn mặt, Quay video Full HD, Tự động lấy nét, Selfie ngược sáng HDR","Độ phân giải":"7 MP"},"Hệ điều hành - CPU":{"Tốc độ CPU":"2.3 GHz","Hệ điều hành":"iOS 10","Chip đồ họa (GPU)":"PowerVR Series7XT Plus","Chipset (hãng SX CPU)":"Apple A10 Fusion 4 nhân 64-bit"},"Màn hình":{"Mặt kính cảm ứng":"Kính oleophobic (ion cường lực)","Màn hình rộng":"5.5","Độ phân giải":"Full HD (1080 x 1920 pixels)","Công nghệ màn hình":"LED-backlit IPS LCD"},"Bộ nhớ & Lưu trữ":{"Bộ nhớ còn lại (khả dụng)":"Khoảng 247.52 GB","Bộ nhớ trong":"256 GB","RAM":"3 GB","Thẻ nhớ ngoài":"Không"},"Kết nối":{"Jack tai nghe":"Không","Kết nối khác":"NFC, Air Play, HDMI, OTG","Cổng kết nối/sạc":"Lightning","Wifi":"Wi-Fi 802.11 a/b/g/n/ac, Dual-band, Wi-Fi hotspot","Bluetooth":"A2DP, LE, v4.2","Mạng di động":"3G, 4G LTE Cat 9","SIM":"1 Nano SIM","GPS":"A-GPS, GLONASS"},"Camera sau":{"Đèn Flash":"4 đèn LED (2 tông màu)","Độ phân giải":"Hai camera 12 MP","Chụp ảnh nâng cao":"Chạm lấy nét, Panorama, Chống rung quang học (OIS), Tự động lấy nét, Nhận diện khuôn mặt, HDR","Quay phim":"4K 2160p@30fps"}}		09:00:00+00	
+\.
+
+
+--
+-- Data for Name: product_template; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY product_template (product_template_id, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: product_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY product_type (product_type_id, name, parent) FROM stdin;
+L01	Điện thoại	
+L02	Phụ kiện điện thoại	
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY "user" (user_id, account, password, name, gender, phone_number, birthday, email, address, registration_date, role) FROM stdin;
+\.
+
+
+--
+-- Name: bill bill_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bill
+    ADD CONSTRAINT bill_pkey PRIMARY KEY (bill_id);
+
+
+--
+-- Name: contact_feedback contact_feedback_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY contact_feedback
+    ADD CONSTRAINT contact_feedback_pkey PRIMARY KEY (contact_feedback_id);
+
+
+--
+-- Name: detailed_bill detailed_bill_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detailed_bill
+    ADD CONSTRAINT detailed_bill_pkey PRIMARY KEY (detailed_bill_id);
+
+
+--
+-- Name: detailed_orders detailed_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY detailed_orders
+    ADD CONSTRAINT detailed_orders_pkey PRIMARY KEY (detailed_orders_id);
+
+
+--
+-- Name: field field_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY field
+    ADD CONSTRAINT field_pkey PRIMARY KEY (field_id);
+
+
+--
+-- Name: field_section field_section_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY field_section
+    ADD CONSTRAINT field_section_pkey PRIMARY KEY (field_section_id);
+
+
+--
+-- Name: image image_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY image
+    ADD CONSTRAINT image_pkey PRIMARY KEY (image_id);
+
+
+--
+-- Name: manufacturer manufacturer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY manufacturer
+    ADD CONSTRAINT manufacturer_pkey PRIMARY KEY (manufacturer_id);
+
+
+--
+-- Name: news news_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY news
+    ADD CONSTRAINT news_pkey PRIMARY KEY (news_id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (orders_id);
+
+
+--
+-- Name: payment payment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY payment
+    ADD CONSTRAINT payment_pkey PRIMARY KEY (payment_id);
+
+
+--
+-- Name: product product_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY product
+    ADD CONSTRAINT product_pkey PRIMARY KEY (product_id);
+
+
+--
+-- Name: product_template product_template_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY product_template
+    ADD CONSTRAINT product_template_pkey PRIMARY KEY (product_template_id);
+
+
+--
+-- Name: product_type product_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY product_type
+    ADD CONSTRAINT product_type_pkey PRIMARY KEY (product_type_id);
+
+
+--
+-- Name: user use_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT use_pkey PRIMARY KEY (user_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
