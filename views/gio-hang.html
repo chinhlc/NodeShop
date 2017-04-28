@@ -38,7 +38,7 @@
 										<td>{{ item.price }} VNĐ</td>
 										<td><input type="number" class="" min="0" name="{{ item.product_id }}" value="{{ cart[item.product_id] }}"></td>
 										<td>{{ item.price * cart[item.product_id] }} VNĐ</td>
-										<td><span class="del"></span></td>
+										<td><span class="del"><img src="../images/del.png"</span></td>
 									</tr>
 								{% endfor %}
 							{% else %}
