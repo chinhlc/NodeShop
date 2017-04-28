@@ -9,7 +9,7 @@ npm install
 ``` 
 node index
 
-http://localhost:3000
+http://localhost:3002
 ```
 
 
