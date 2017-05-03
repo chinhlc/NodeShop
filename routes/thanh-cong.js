@@ -72,16 +72,9 @@ module.exports = function (express) {
                             total: total
                         };
                         //log('INSERT INTO orders VALUES(' + val.id + ', ' + val.user_id + ', ' + val.name + ', ' + val.phone + ', ' + val.email + ', ' + val.address + ', ' + val.note + ', ' + val.status + ', ' + val.total + ', ' + val.method + ', ' + val.order_date + ', ' + val.delivery_date + ')');
-<<<<<<< HEAD
-                        db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
-                            "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
-                        
-=======
                         
                         db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
                             "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
-			    
->>>>>>> e5849f291edb64895c768aab1a0433e99c09d297
                             .then((data) => {
                             log(data);
                             res.render('thanh-cong.html', {
