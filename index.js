@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 const { db, } = require('./pgp');
 const csrf = require('csurf')
 
-const csrfProtection = csrf({ cookie: true })
+// const csrfProtection = csrf({ cookie: true })
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -78,7 +78,7 @@ app.set('view engine', 'html');
 
 app.use(express.static(__dirname + '/public'));
 
-require('./routes/routes')(app, express, csrfProtection);
+require('./routes/routes')(app, express);
 
     const port = 3002;
     app.listen(port, () => {

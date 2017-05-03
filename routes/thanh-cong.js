@@ -14,10 +14,10 @@ function getFormattedDate() {
     return str;
 }
 
-module.exports = function (express, csrfProtection) {
+module.exports = function (express) {
 	const router = express.Router();
 
-	router.post('/', csrfProtection, (req, res) => {
+	router.post('/', (req, res) => {
 
 	    //log(req.body);
         let idClient = req.cookies['cart'];
@@ -72,17 +72,9 @@ module.exports = function (express, csrfProtection) {
                             total: total
                         };
                         //log('INSERT INTO orders VALUES(' + val.id + ', ' + val.user_id + ', ' + val.name + ', ' + val.phone + ', ' + val.email + ', ' + val.address + ', ' + val.note + ', ' + val.status + ', ' + val.total + ', ' + val.method + ', ' + val.order_date + ', ' + val.delivery_date + ')');
-                        /*
                         db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
                             "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
-                            */
-                        db.task(t => {
-                            let queries = lst.map(l => {
-                                return t.one("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
-                            "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
-                            });
-                            return t.batch(queries);
-                        })
+                        
                             .then((data) => {
                             log(data);
                             res.render('thanh-cong.html', {

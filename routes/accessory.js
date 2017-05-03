@@ -74,7 +74,6 @@ module.exports = function (express) {
                 res.render('danh-sach-pk.html', {
                     pageTitle: 'Phụ Kiện',
                     products: data[0],
-                    // product_type: data[2],
                     countAll: data[1],
                     allpage: page,
                     pageCurrent: q

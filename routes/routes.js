@@ -1,4 +1,4 @@
-module.exports = (app, express, csrfProtection) => {
+module.exports = (app, express) => {
     
     const home = require('./home')(express);
     app.use('/', home);
@@ -12,10 +12,10 @@ module.exports = (app, express, csrfProtection) => {
     const productBrand = require('./product-brand')(express);
     app.use('/hang-dien-thoai', productBrand);
 
-    const giohang = require('./gio-hang')(express, csrfProtection);
+    const giohang = require('./gio-hang')(express);
     app.use('/gio-hang/', giohang);
 
-    const thanhcong = require('./thanh-cong')(express, csrfProtection);
+    const thanhcong = require('./thanh-cong')(express);
     app.use('/thanh-cong/', thanhcong);
 
     app.get('/tin-tuc', (req, res) => {

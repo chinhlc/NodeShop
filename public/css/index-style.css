@@ -317,7 +317,7 @@ header {
 	.main-menu>ul>li>a {padding: 4px 10px 20px 10px;}
 	.main-menu>ul>li{width:auto;padding: 0px;background: none !important;border:none;}
 	.main-menu .active{border-bottom: 3px solid #E24545;}
-	.main-menu>ul>li>a:hover , .main-menu .active{border-bottom: 3px solid #E24545;}
+	.main-menu>ul>li>a:hover,.main-menu>ul>li>a:active ,.main-menu .active{border-bottom: 3px solid #E24545;}
 }
 @media (min-width: 1200px) {
 	.main-menu-bar .logo {width: 234px;height: 88px;}
@@ -726,17 +726,6 @@ font-size: 12px;
 }
 
 /*------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-
 
 /* FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / FOOTER / */
 footer {

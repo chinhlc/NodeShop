@@ -45,7 +45,6 @@
 
 
 		<div class="col-md-9 col-sm-6 product-3">
-
 			{% for each in products %}
 			<div class="col-md-4 col-sm-6">
 				<div class="product-box ph">
@@ -76,18 +75,28 @@
 
 		<div class="col-md-12 pagination-box">
 			<ul class="pagination">
-					<li><a href="?page=1" {% if (pageCurrent < 1) %} class="noclick" {% endif %}>Trang đầu</a></li>
-					{% for i in range(1, allpage + 1) %}
-						{% if (pageCurrent > 0) %}
-							<li 3 {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{ i }}">{{ i }}</a></li>
-						{% elif (i === 1) %}
-							<li 1 class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+				{% if pageQuery %}
+					{% for i in range(1, allpage+1) %}
+						{% if loop.first %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">Trang đầu</a></li>
+						{% elif loop.last %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">Trang cuối</a></li>
 						{% else %}
-							<li 2><a href="?page={{ i }}">{{ i }}</a></li>
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">{{i}}</a></li>
 						{% endif %}
 					{% endfor %}
-					<li><a href="?page={{ allpage }}">Trang cuối</a></li>
-				  </ul>
+				{% else %}
+					{% for i in range(1, allpage+1) %}
+						{% if loop.first %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">Trang đầu</a></li>
+						{% elif loop.last %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">Trang cuối</a></li>
+						{% else %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a></li>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</ul>
 		</div>
 		<!-- end col -->
 

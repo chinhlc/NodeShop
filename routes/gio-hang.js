@@ -7,10 +7,10 @@ const product = new Product(db);
 
 let log = console.log;
 
-module.exports = function (express, csrfProtection) {
+module.exports = function (express) {
 	const router = express.Router();
 
-	router.get('/', csrfProtection, (req, res) => {
+	router.get('/', (req, res) => {
 
 	    //Lấy giá trị session cart
         let cart = req.session.cart;
@@ -38,7 +38,6 @@ module.exports = function (express, csrfProtection) {
                 title: 'Giỏ hàng',
                 product: '',
                 cart: '',
-                csrfToken: req.csrfToken()
             });
         }else {
 
@@ -54,7 +53,6 @@ module.exports = function (express, csrfProtection) {
                         title: 'Giỏ hàng',
                         product: data[0],
                         cart: data[1],
-                        csrfToken: req.csrfToken()
                     });
                 })
                 .catch(error => {
@@ -133,7 +131,6 @@ module.exports = function (express, csrfProtection) {
                 title: 'Giỏ hàng',
                 product: '',
                 cart: '',
-                csrfToken: req.csrfToken()
             });
         }
 
@@ -148,8 +145,7 @@ module.exports = function (express, csrfProtection) {
                     title: 'Giỏ hàng',
                     product: data[0],
                     cart: data[1],
-                    csrfToken: req.csrfToken()
-                });
+                    });
             })
             .catch(error => {
                 res.json({

@@ -22,9 +22,9 @@ module.exports = function (express) {
         let cart = req.session.cart;
         //log(cart);
         let addcart = '';
-	    if(typeof addtocart != 'undefined') {
+        if (typeof addtocart != 'undefined') {
 
-            if(cart && cart[addtocart]) {
+            if (cart && cart[addtocart]) {
                 let qty = parseInt(cart[addtocart]);
                 cart[addtocart] = qty + 1;
 
@@ -44,7 +44,7 @@ module.exports = function (express) {
                             error: error.message || error
                         });
                     });
-            }else {
+            } else {
                 cart[addtocart] = 1;
 
                 let cart_insert = {
@@ -82,12 +82,32 @@ module.exports = function (express) {
         let order = req.query.order;
         //
         db.task(t => {
-            return t.batch([
-                product.selectByPagination(n, pgfrom),
-                product.countAll(),
-                q,
-                addcart
-            ]);
+            if (price !== undefined) {
+                let productData = product.selectByPriceRange2(price, n, pgfrom);
+                return t.batch([
+                    productData[0],
+                    productData[1],
+                    q,
+                    addcart,
+                    '?gia=' + price
+                ]);
+            } else if (order !== undefined) {
+                let productData = product.selectByOrder(order, n, pgfrom);
+                return t.batch([
+                    productData[0],
+                    productData[1],
+                    q,
+                    addcart,
+                    '?order=' + order
+                ]);
+            } else {
+                return t.batch([
+                    product.selectByPagination(n, pgfrom),
+                    product.countAll(),
+                    q,
+                    addcart
+                ]);
+            }
         })
             .then(data => {
                 let countAll = page = 0;
@@ -103,7 +123,8 @@ module.exports = function (express) {
                     products: data[0],
                     countAll: data[1],
                     allpage: page,
-                    pageCurrent: q
+                    pageCurrent: q,
+                    pageQuery: data[4]
                 });
             })
             .catch(error => {
