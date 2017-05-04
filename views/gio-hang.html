@@ -28,17 +28,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% set total = 0 %}
 							{% if product %}
 								{% for item in product %}
-									{% set total = total + (item.price * cart[item.product_id]) %}
 									<tr>
 										<td>{{ loop.index }}</td>
 										<td class="img_cart"><img src="images/products/{{ item.product_id }}_0.jpg"></td>
 										<td>{{ item.product_name }}</td>
 										<td>{{ item.price }} VNĐ</td>
 										<td><input type="number" class="" min="0" name="{{ item.product_id }}" value="{{ cart[item.product_id] }}"></td>
-										<td>{{ item.price * cart[item.product_id] }} VNĐ</td>
+										<td>{{ item.total }} VNĐ</td>
 										<td><span class="del"><img src="../images/del.png"</span></td>
 									</tr>
 								{% endfor %}

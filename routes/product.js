@@ -3,6 +3,7 @@ const { db, } = require('../pgp');
 const Product = require('../models/products');
 const Category = require('../models/category');
 const Image = require('../models/images');
+const PriceConverter = require ('../models/priceConvert');
 
 const product = new Product(db);
 const cate = new Category(db);
@@ -118,6 +119,11 @@ module.exports = function (express) {
                 if (q > page) {
                     q = 1;
                 }
+                // reformat price
+                data[0].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
                 res.render('danh-sach.html', {
                     pageTitle: 'Điện thoại',
                     products: data[0],
@@ -145,6 +151,12 @@ module.exports = function (express) {
             ]);
         })
             .then(data => {
+                // reformat price
+                data[0].price = PriceConverter(data[0].price);
+                data[2].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
                 res.render('chi-tiet.html', { pageTitle: 'Điện Thoại', detail: data[0], images: data[1], productSimilar: data[2] });
             })
             .catch(error => {

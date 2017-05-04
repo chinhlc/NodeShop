@@ -4,6 +4,7 @@ const Product = require('../models/products');
 const Accessory = require('../models/accessory');
 const Category = require('../models/category');
 const Image = require('../models/images');
+const PriceConverter = require('../models/priceConvert');
 
 const product = new Product(db);
 const accessory = new Accessory(db);
@@ -28,6 +29,17 @@ module.exports = function (express, cart) {
             ]);
         })
             .then(data => {
+                // reformat price
+                data[0].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                data[1].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                data[2].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
                 res.render('index.html', {
                     pageTitle: 'Trang chủ',
                     //childDtHeader: data[0],

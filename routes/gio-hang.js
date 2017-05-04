@@ -1,36 +1,37 @@
-const {db, } = require('../pgp');
+const { db, } = require('../pgp');
 const shortid = require('shortid');
 
 const Product = require('../models/products');
+const PriceConverter = require('../models/priceConvert');
 
 const product = new Product(db);
 
 let log = console.log;
 
 module.exports = function (express) {
-	const router = express.Router();
+    const router = express.Router();
 
-	router.get('/', (req, res) => {
+    router.get('/', (req, res) => {
 
-	    //Lấy giá trị session cart
+        //Lấy giá trị session cart
         let cart = req.session.cart;
         //log(cart);
         let ids = '';
         let count = 0;
 
         //Lấy chuỗi product_id để SELECT DATABASE
-        for(item in cart){
+        for (item in cart) {
             count++;
-            if(count === 1){
+            if (count === 1) {
                 ids += "'" + item + "'";
-            }else{
+            } else {
                 ids += ",'" + item + "'";
             }
         }
 
         //Đếm cart
         let countCart = 0;
-        if(cart) {
+        if (cart) {
             countCart = Object.keys(cart).length;
         }
         if (!cart || countCart === 0) {
@@ -39,7 +40,7 @@ module.exports = function (express) {
                 product: '',
                 cart: '',
             });
-        }else {
+        } else {
 
             db.task(t => {
                 return t.batch([
@@ -49,10 +50,22 @@ module.exports = function (express) {
             })
                 .then(data => {
                     //log(data);
+                    // reformat price
+                    // calculate total price of the order
+                    let total = 0;
+                    data[0].forEach(eachProduct => {
+                        eachProduct.total = data[1][eachProduct.product_id] * eachProduct.price;
+                        total += eachProduct.total;
+                        eachProduct.total = PriceConverter(eachProduct.total);
+                        eachProduct.price = PriceConverter(eachProduct.price);
+                    });
+                    total = PriceConverter(total);
+                    //
                     res.render('gio-hang.html', {
                         title: 'Giỏ hàng',
                         product: data[0],
                         cart: data[1],
+                        total: total
                     });
                 })
                 .catch(error => {
@@ -62,16 +75,16 @@ module.exports = function (express) {
                     });
                 });
         }
-	});
+    });
 
-	router.post('/', (req, res) => {
+    router.post('/', (req, res) => {
 
-	    //log(req.body);
+        //log(req.body);
         let idClient = req.cookies['cart'];
         let cart = req.session.cart;
         let ids = '';
         let count = 0;
-        if(req.body['capnhat']){
+        if (req.body['capnhat']) {
             for (item in cart) {
                 if (req.body[item] > 0) {
 
@@ -141,11 +154,23 @@ module.exports = function (express) {
             ]);
         })
             .then(data => {
+                // reformat price
+                // calculate total price of the order
+                let total = 0;
+                data[0].forEach(eachProduct => {
+                    eachProduct.total = data[1][eachProduct.product_id] * eachProduct.price;
+                    total += eachProduct.total;
+                    eachProduct.total = PriceConverter(eachProduct.total);
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                total = PriceConverter(total);
+                //
                 res.render('gio-hang.html', {
                     title: 'Giỏ hàng',
                     product: data[0],
                     cart: data[1],
-                    });
+                    total: total
+                });
             })
             .catch(error => {
                 res.json({
@@ -153,7 +178,7 @@ module.exports = function (express) {
                     error: error.message || error
                 });
             });
-	});
+    });
 
-	return router;
+    return router;
 };

@@ -3,6 +3,7 @@ const { db, } = require('../pgp');
 const Category = require('../models/category');
 const Image = require('../models/images');
 const Accessory = require('../models/accessory');
+const PriceConverter = require ('../models/priceConvert');
 
 const cate = new Category(db);
 const image = new Image(db);
@@ -71,6 +72,11 @@ module.exports = function (express) {
                 if (q > page) {
                     q = 1;
                 }
+                // reformat price
+                data[0].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
                 res.render('danh-sach-pk.html', {
                     pageTitle: 'Phụ Kiện',
                     products: data[0],
@@ -99,6 +105,12 @@ module.exports = function (express) {
             ]);
         })
             .then(data => {
+                // reformat price
+                data[0].price = PriceConverter(data[0].price);
+                data[2].forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
                 res.render('chi-tiet-pk.html', { pagetitle: 'Phụ Kiện', detail: data[0], images: data[1], productSimilar: data[2] });
             })
             .catch(error => {
