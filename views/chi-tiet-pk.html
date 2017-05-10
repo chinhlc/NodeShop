@@ -22,9 +22,9 @@
 				<div class="mau mau0">
 					{% for each in images %}
 					{% if loop.first %}
-						<img class="product-big-image showImageAfterOnclick" src="/images/products/{{detail.product_id}}/{{each.image_name}}"> 
+						<img class="product-big-image showImageAfterOnclick" src="/images/phukien/{{each.url_image}}"> 
 					{% else %}
-						<img class="product-sm-image ClickEvent" src="/images/products/{{detail.product_id}}/{{each.image_name}}"> 
+						<img class="product-sm-image ClickEvent" src="/images/phukien/{{each.url_image}}"> 
 					{% endif %}
 					{% endfor%}
 				</div>
