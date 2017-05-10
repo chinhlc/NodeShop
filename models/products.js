@@ -130,28 +130,3 @@ class Product extends Model {
 }
 
 module.exports = Product;
-
-
-//var sql = require('../sql').products;
-/*
-module.exports = (rep) => {
-
-    return {
-        query: (pgfrom, n) =>
-            //rep.any('SELECT * FROM product﻿ORDER BY product_id DESC LIMIT $1 OFFSET $2', [n, pgfrom]),
-            rep.any('SELECT * FROM product ORDER BY product_id DESC LIMIT $1 OFFSET $2', [n, pgfrom]),
-
-        countAll: ()=>
-            rep.any('SELECT count(*) FROM product'),
-
-        byProductType: id =>
-            rep.many('SELECT * FROM product WHERE product_type_id = $1', id),
-
-        detail: id =>
-            rep.oneOrNone('SELECT * FROM product WHERE product_id = $1', id),
-
-        all: () =>
-            rep.any('SELECT * FROM product ')
-    };
-};
-*/

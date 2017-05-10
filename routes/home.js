@@ -1,4 +1,4 @@
-const {db,} = require('../pgp');
+const { db, } = require('../pgp');
 
 const Product = require('../models/products');
 const Accessory = require('../models/accessory');
@@ -19,7 +19,12 @@ module.exports = function (express, cart) {
 
 
     router.get('/', (req, res, next) => {
-
+        // check if user is logged in -> if not assign req.session.login = false
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+        //console.log(req.session);
+        // query database to get product data
         db.task(t => {
             return t.batch([
                 //cate.selectCurrentById('ptpk'),
@@ -42,8 +47,8 @@ module.exports = function (express, cart) {
                 //
                 res.render('index.html', {
                     pageTitle: 'Trang chủ',
-                    //childDtHeader: data[0],
-                    //accessory: data[1],
+                    login: req.session.login,
+                    user: req.session.user,
                     productHot: data[0],
                     productNew: data[1],
                     accessoryHot: data[2]

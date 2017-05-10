@@ -13,7 +13,7 @@
 					</div>
 				</form>
 			</div>
-
+			{% if not login %}
 			<div class="sign log-in display-none">
 				<span id="login" class="show-login">Đăng nhập - Đăng ký</span>
 				<ul class="logged-box log-in-box">
@@ -26,14 +26,19 @@
 
 				</ul>
 			</div>
+			{% else %}
 			<div class="sign logged display-none">
-				<span id="login"> $ Tên người dùng</span>
+				{% if login %}
+				<span id="login"> $ {{ user.email }}</span> {% else %}
+				<span id="login"> $ Tên người dùng</span> {% endif %}
 				<ul class="logged-box">
-					<li><a href="/tai-khoan">Quản lý tài khoản</a></li>
+					<li><a href="/auth/tai-khoan">Quản lý tài khoản</a></li>
 					<li><a href="/gio-hang">Đơn hàng của tôi</a></li>
-					<li><span href="" class="onclick-loggoff show-logged loggoff-button">Đăng xuất</span></li>
+					<li><a class="onclick-loggoff show-logged loggoff-button">Đăng xuất</a></li>
+					<!--href="/auth/logout"-->
 				</ul>
 			</div>
+			{% endif %}
 		</div>
 		<!-- end row -->
 	</div>
@@ -55,7 +60,7 @@
 			<div class="main-menu-box">
 				<nav class="main-menu">
 					<ul>
-						<li class="dkdn"><span href="#">ĐĂNG KÍ - ĐĂNG NHẬP</span>
+						<!--<li class="dkdn"><span href="#">ĐĂNG KÍ - ĐĂNG NHẬP</span>
 							<ul class="logged-box dkdn-box ">
 								<li>
 									<span data-toggle="modal" data-target="#loginModal">Đăng nhập </span>
@@ -69,10 +74,9 @@
 							<ul class="logged-box usn-box">
 								<li><a href="/tai-khoan">Quản lý tài khoản</a></li>
 								<li><a href="/gio-hang">Đơn hàng của tôi</a></li>
-								<li><span href="" class="onclick-loggoff show-logged loggoff-button">Đăng xuất</span></li>
+								<li><span class="onclick-loggoff show-logged loggoff-button"><a href="/auth/logout">Đăng xuất</a></span></li>
 							</ul>
-						</li>
-
+						</li>-->
 						<li class="mm-tc"><a href="/">TRANG CHỦ</a></li>
 						<li class="mm-dt"><a href="/dien-thoai">ĐIỆN THOẠI</a>
 

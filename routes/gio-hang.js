@@ -13,6 +13,10 @@ module.exports = function (express) {
 
     router.get('/', (req, res) => {
 
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+
         //Lấy giá trị session cart
         let cart = req.session.cart;
         //log(cart);
@@ -37,6 +41,8 @@ module.exports = function (express) {
         if (!cart || countCart === 0) {
             res.render('gio-hang.html', {
                 title: 'Giỏ hàng',
+                login: req.session.login,
+                user: req.session.user,
                 product: '',
                 cart: '',
             });
@@ -63,6 +69,8 @@ module.exports = function (express) {
                     //
                     res.render('gio-hang.html', {
                         title: 'Giỏ hàng',
+                        login: req.session.login,
+                        user: req.session.user,
                         product: data[0],
                         cart: data[1],
                         total: total
@@ -142,6 +150,8 @@ module.exports = function (express) {
         if (countCart === 0) {
             res.render('gio-hang.html', {
                 title: 'Giỏ hàng',
+                login: req.session.login,
+                user: req.session.user,
                 product: '',
                 cart: '',
             });
@@ -167,6 +177,8 @@ module.exports = function (express) {
                 //
                 res.render('gio-hang.html', {
                     title: 'Giỏ hàng',
+                    login: req.session.login,
+                    user: req.session.user,
                     product: data[0],
                     cart: data[1],
                     total: total

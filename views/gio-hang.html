@@ -3,7 +3,7 @@
 <link href="/css/danh-sach-style.css" rel="stylesheet">
 <link href="/css/chi-tiet-style.css" rel="stylesheet">
 <link href="/css/gio-hang-style.css" rel="stylesheet">
-<script src="/js/index.js"></script>
+<!--<script src="/js/index.js"></script>-->
 {% endblock %} 
 {% block content %}
 <section class="container" id="cart-page">
@@ -67,21 +67,21 @@
 		<form action="/thanh-cong/" method="post">
 			<div class="col-md-7">
 				<div class="form-group d-name">
-					<label for="delivery-name">Họ và tên:</label>
-					<input type="text" class="form-control" id="delivery-name" name="name" placeholder="" required>
+					<label for="delivery-name">Họ và tên: </label>
+					<input type="text" class="form-control" id="delivery-name" name="name" value="{{ user.fullname }}" required>
 				</div>
 				<div class="form-group d-phone">
 					<label for="delivery-phone">Số điện thoại:</label>
 					<input type="text" class="form-control" id="delivery-phone" name="phone" placeholder="" required>
 				</div>
 				<div class="form-group">
-					<label for="contact-email">Địa chỉ Email của bạn :</label>
-					<input type="email" class="form-control" id="contact-email" name="email" placeholder="" required>
+					<label for="contact-email">Địa chỉ Email của bạn: </label>
+					<input type="email" class="form-control" id="contact-email" name="email" value="{{ user.email }}" required>
 					<p>Cần nhập email để nhận được thông tin đơn hàng từ Thành Quân SmartPhone</p>
 				</div>
 				<div class="form-group">
 					<label for="delivery-address">Địa chỉ nhận hàng:</label>
-					<input type="text" class="form-control" id="delivery-address" name="address" placeholder="" required>
+					<input type="text" class="form-control" id="delivery-address" name="address" value="{{ user.address }}" required>
 					<p>Phí Ship được tính với khoảng cách trên 3km tính từ cửa hàng</p>
 				</div>
 				<div class="form-group line4">

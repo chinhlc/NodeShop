@@ -56,6 +56,8 @@ module.exports = function (express) {
                 //
                 res.render('danh-sach.html', {
                     pageTitle: 'Điện thoại',
+                    login: req.session.login,
+                    user: req.session.user,
                     products: data[0],
                     countAll: data[1],
                     allpage: page,

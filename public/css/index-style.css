@@ -128,11 +128,11 @@ header {
 	background-size: 35px;
 }
 .log-in{
-	display: none;
+	display: block!important;
 	position: relative;
 }
 .logged {
-	display: block;
+	display: block!important;
 	position: relative;
 }
 

@@ -3,7 +3,7 @@ const { db, } = require('../pgp');
 const Product = require('../models/products');
 const Category = require('../models/category');
 const Image = require('../models/images');
-const PriceConverter = require ('../models/priceConvert');
+const PriceConverter = require('../models/priceConvert');
 
 const product = new Product(db);
 const cate = new Category(db);
@@ -15,6 +15,10 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/', (req, res) => {
+        
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
 
         let idClient = req.cookies['cart'];
         //Add to cart
@@ -126,6 +130,8 @@ module.exports = function (express) {
                 //
                 res.render('danh-sach.html', {
                     pageTitle: 'Điện thoại',
+                    login: req.session.login,
+                    user: req.session.user,
                     products: data[0],
                     countAll: data[1],
                     allpage: page,
@@ -142,6 +148,11 @@ module.exports = function (express) {
     });
 
     router.get('/:id', function (req, res) {
+
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+        
         let id = req.params.id;
         db.task(t => {
             return t.batch([
@@ -157,7 +168,14 @@ module.exports = function (express) {
                     eachProduct.price = PriceConverter(eachProduct.price);
                 });
                 //
-                res.render('chi-tiet.html', { pageTitle: 'Điện Thoại', detail: data[0], images: data[1], productSimilar: data[2] });
+                res.render('chi-tiet.html', {
+                    pageTitle: 'Điện Thoại',
+                    login: req.session.login,
+                    user: req.session.user,
+                    detail: data[0],
+                    images: data[1],
+                    productSimilar: data[2]
+                });
             })
             .catch(error => {
                 res.json({

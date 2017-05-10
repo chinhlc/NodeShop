@@ -3,7 +3,7 @@ const { db, } = require('../pgp');
 const Category = require('../models/category');
 const Image = require('../models/images');
 const Accessory = require('../models/accessory');
-const PriceConverter = require ('../models/priceConvert');
+const PriceConverter = require('../models/priceConvert');
 
 const cate = new Category(db);
 const image = new Image(db);
@@ -15,6 +15,11 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/', (req, res) => {
+
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+
         let q = req.query.page;
         let n = 9;
         let pgfrom = 0;
@@ -79,6 +84,8 @@ module.exports = function (express) {
                 //
                 res.render('danh-sach-pk.html', {
                     pageTitle: 'Phụ Kiện',
+                    login: req.session.login,
+                    user: req.session.user,
                     products: data[0],
                     countAll: data[1],
                     allpage: page,
@@ -95,6 +102,10 @@ module.exports = function (express) {
 
     router.get('/:id', function (req, res) {
 
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+        
         let id = req.params.id;
 
         db.task(t => {
@@ -111,7 +122,14 @@ module.exports = function (express) {
                     eachProduct.price = PriceConverter(eachProduct.price);
                 });
                 //
-                res.render('chi-tiet-pk.html', { pagetitle: 'Phụ Kiện', detail: data[0], images: data[1], productSimilar: data[2] });
+                res.render('chi-tiet-pk.html', {
+                    pagetitle: 'Phụ Kiện',
+                    login: req.session.login,
+                    user: req.session.user,
+                    detail: data[0],
+                    images: data[1],
+                    productSimilar: data[2]
+                });
             })
             .catch(error => {
                 res.json({
