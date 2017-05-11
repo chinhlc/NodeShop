@@ -34,7 +34,7 @@
 				<ul class="logged-box">
 					<li><a href="/auth/tai-khoan">Quản lý tài khoản</a></li>
 					<li><a href="/gio-hang">Đơn hàng của tôi</a></li>
-					<li><a class="onclick-loggoff show-logged loggoff-button">Đăng xuất</a></li>
+					<li><a href="/auth/logout" class="onclick-loggoff show-logged loggoff-button">Đăng xuất</a></li>
 					<!--href="/auth/logout"-->
 				</ul>
 			</div>
@@ -98,15 +98,17 @@
 							</div>
 						</li>
 						<li class="mm-pk"><a href="/phu-kien">PHỤ KIỆN</a>
-							<div class="menu-dropdown menu-dropdown2">
+							<!--<div class="menu-dropdown menu-dropdown2">
 								<ul>
 									{#{% for each in accessory %}
 									<li><a href="/phu-kien/{{ each.category_id}}">{{ each.category_name }}</a></li>
 									{% endfor %}#}
 									<li><a href="/phu-kien" class="pk-icon-1">Pin sạc</a></li>
+									<li><a href="/phu-kien" class="pk-icon-1">Pin sạc</a></li>
+									<li><a href="/phu-kien" class="pk-icon-1">Pin sạc</a></li>
 
 								</ul>
-							</div>
+							</div>-->
 						</li>
 						<li class="mm-tt"><a href="/tin-tuc">TIN TỨC</a></li>
 						<li class="mm-lh"><a href="/lien-he">LIÊN HỆ</a></li>

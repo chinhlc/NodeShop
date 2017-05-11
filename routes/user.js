@@ -10,7 +10,6 @@ module.exports = function (express) {
 
     // handle sign up request
     router.post('/sign-up', (req, res) => {
-        console.log(req.body);
         if (req.body.password !== req.body.password2) {
             req.flash('error', 'Passwords do not match');
             res.status(401).render('index', {login: req.session.login});
@@ -97,6 +96,7 @@ module.exports = function (express) {
 
     router.get('/logout', (req, res) => {
         req.session.login = false;
+        delete req.session.user;
         console.log('Log out');
         console.log(req.session);
         req.flash('error', 'User is logged out');

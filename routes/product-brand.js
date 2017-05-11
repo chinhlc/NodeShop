@@ -3,7 +3,7 @@ const { db, } = require('../pgp');
 const Product = require('../models/products');
 const Category = require('../models/category');
 const Image = require('../models/images');
-const PriceConverter = require ('../models/priceConvert');
+const PriceConverter = require('../models/priceConvert');
 
 const product = new Product(db);
 const cate = new Category(db);
@@ -15,6 +15,12 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/:name', (req, res) => {
+        
+        if (req.session.login === undefined) {
+            req.session.login = false;
+        }
+
+        // pagination
         let q = req.query.page;
         let n = 9;
         let pgfrom = 0;

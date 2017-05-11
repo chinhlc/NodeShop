@@ -19,7 +19,8 @@ module.exports = function (express) {
         if (req.session.login === undefined) {
             req.session.login = false;
         }
-
+        
+        // pagination
         let q = req.query.page;
         let n = 9;
         let pgfrom = 0;

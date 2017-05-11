@@ -17,8 +17,9 @@ class Product extends Model {
     detail(id) {
         return this.db.oneOrNone("SELECT * FROM product WHERE product_id = $1", id);
     }
+    // special function to get products in shopping cart (including phones and accessories)
     cartIDs(ids) {
-        return this.db.any("SELECT product_id, product_name, price FROM product WHERE product_type_id = 'ptdt' and product_id IN (" + ids + ")");
+        return this.db.any("SELECT product_id, product_type_id, product_name, price FROM product WHERE product_id IN (" + ids + ")");
     }
     findByName(name) {
         return this.db.any("SELECT * FROM product WHERE product_type_id = 'ptdt' AND product_name like '%$1#%'", name);

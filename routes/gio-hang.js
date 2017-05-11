@@ -10,7 +10,67 @@ let log = console.log;
 
 module.exports = function (express) {
     const router = express.Router();
+    
+    // add to shopping cart get request 
+    router.get('/add-to-cart/:id', (req, res) => {
 
+        let idClient = req.cookies['cart'];
+        //Add to cart
+        let addtocart = req.params.id;
+
+        let cart = req.session.cart;
+        //log(cart);
+        let addcart = '';
+        if (typeof addtocart != 'undefined') {
+
+            if (cart && cart[addtocart]) {
+                let qty = parseInt(cart[addtocart]);
+                cart[addtocart] = qty + 1;
+
+                let cart_insert = {
+                    session_user_id: idClient,
+                    product_id: addtocart,
+                    qty: qty + 1
+                };
+
+                db.none('UPDATE carts SET qty=${qty} WHERE session_user_id=${session_user_id} AND product_id=${product_id}', cart_insert)
+                    .then(() => {
+                        console.log('Update Success');
+                        res.redirect(req.header('referrer'));
+                    })
+                    .catch(error => {
+                        res.json({
+                            success: false,
+                            error: error.message || error
+                        });
+                    });
+            } else {
+                cart[addtocart] = 1;
+
+                let cart_insert = {
+                    id: '',
+                    session_user_id: idClient,
+                    product_id: addtocart,
+                    qty: 1
+                };
+                db.none('INSERT INTO carts(session_user_id, product_id, qty) VALUES(${session_user_id}, ${product_id}, ${qty})', cart_insert)
+                    .then(() => {
+                        console.log('Insert Success');
+                        console.log(req.header('referrer'));
+                        res.redirect(req.header('referrer'));
+                    })
+                    .catch(error => {
+                        res.json({
+                            success: false,
+                            error: error.message || error
+                        });
+                    });
+
+            }
+        }
+    });
+
+    // access gio-hang.html page
     router.get('/', (req, res) => {
 
         if (req.session.login === undefined) {

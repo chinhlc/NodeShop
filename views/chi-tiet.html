@@ -85,7 +85,7 @@
 
 			<p class="quantity color-text"> Hiện có : {{detail.quantity}} sản phẩm</p>
 
-			<span class="buy product-buy-box">MUA HÀNG</span>
+			<span class="buy product-buy-box"><a href="/gio-hang/add-to-cart/{{detail.product_id}}">MUA HÀNG</a></span>
 			<span class="buy product-buy-box added">Đã thêm vào giỏ hàng</span>
 
 		</div>
@@ -147,7 +147,7 @@
 									<p>PIN: {{each.main_property['Dung lượng pin (mAh)']}}</p>
 								</div>
 								<a href="chi-tiet.html" class="watch">Xem chi tiết</a>
-								<span class="buy">Mua hàng</span>
+								<span class="buy"><a href="/gio-hang/add-to-cart/{{each.product_id}}">Mua hàng</a></span>
 								<span class="buy added">Đã thêm vào giỏ hàng</span>
 							</div>
 							<!-- end info-box -->
