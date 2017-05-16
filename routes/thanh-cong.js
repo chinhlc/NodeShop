@@ -50,11 +50,11 @@ module.exports = function (express) {
         })
             .then(data => {
                 let total = 0;
-                let allProducts = data[0];
-                let orderData;
-                let cart = data[1];
+                let allProducts = data[0]; // detail of all products in the shopping cart
+                let orderData; // variable to store order info
+                let cart = data[1]; // stores quantity of each product in the cart
 
-                allProducts.forEach((item) => {
+                allProducts.forEach((item) => { // calculate total price of the order
                     total = total + (item.price * cart[item.product_id]);
                 });
 
@@ -85,7 +85,7 @@ module.exports = function (express) {
 
                         // create an array of all products to be inserted into detailed_orders table
                         let allProductsArr = [];
-
+                        // Insert order info into orders table
                         db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
                             "VALUES(${id}, ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date}) RETURNING orders_id", orderData)
                             .then((returned_orders_id) => {
@@ -97,29 +97,33 @@ module.exports = function (express) {
                                         detailed_orders_id: id,
                                         orders_id: returned_orders_id[0].orders_id,
                                         product_id: item.product_id,
+                                        product_type_id: item.product_type_id,
+                                        product_name: item.product_name,
                                         quantity: cart[item.product_id],
                                         price: item.price
                                     }
                                     allProductsArr.push(eachProduct);
                                     // insert each product into detailed_orders
-                                    db.query("INSERT INTO detailed_orders (detailed_orders_id, orders_id, product_id, quantity, price) VALUES(${detailed_orders_id}, ${orders_id}, ${product_id}, ${quantity}, ${price})", eachProduct);
+                                    db.query("INSERT INTO detailed_orders (detailed_orders_id, orders_id, product_id, product_type_id, product_name, quantity, price) VALUES(${detailed_orders_id}, ${orders_id}, ${product_id}, ${product_type_id}, ${product_name}, ${quantity}, ${price})", eachProduct);
                                 });
                             })
                             .then(data => {
                                 //console.log(orderData);
                                 //console.log(allProducts);
                                 //console.log(total);
-                                // Remove session cookies 
+                                // Remove Session Cookies 
                                 req.cookies['cart'] // = session_user_id in cart table
                                 db.query("DELETE from carts WHERE session_user_id = $1", req.cookies['cart']);
                                 req.session.cart = {};
-                                // render page
+
+                                // Reformat Price to display in rendered page
                                 allProducts.forEach(eachProduct => {
                                     eachProduct.total = cart[eachProduct.product_id] * eachProduct.price;
                                     eachProduct.total = PriceConverter(eachProduct.total);
                                     eachProduct.price = PriceConverter(eachProduct.price);
                                 });
                                 total = PriceConverter(total);
+
                                 res.render('thanh-cong.html', {
                                     title: 'Đặt hàng thành công',
                                     orderData: orderData,

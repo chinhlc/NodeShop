@@ -59,5 +59,22 @@ module.exports = function (express, cart) {
             });
     });
 
+
+    router.post('/search', (req, res) => {
+        product.findByName(req.body.search)
+            .then(data => {
+                // reformat price
+                data.forEach(eachProduct => {
+                    eachProduct.price = PriceConverter(eachProduct.price);
+                });
+                //
+                res.render('danh-sach.html', {
+                    pageTitle: 'Tìm Kiếm',
+                    user: req.session.user,
+                    products: data
+                });
+            })
+    });
+
     return router
 };

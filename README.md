@@ -24,4 +24,4 @@ http://localhost:3002
 #### 16/05/2017
 * Update thanh-cong.html: display customers order detail
 * Display orders from databse in admin page
-
+* Change detailed_orders table to include product name and product type id -> display info in admin panel more easily 

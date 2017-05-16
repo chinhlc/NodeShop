@@ -22,7 +22,7 @@ class Product extends Model {
         return this.db.any("SELECT product_id, product_type_id, product_name, price FROM product WHERE product_id IN (" + ids + ")");
     }
     findByName(name) {
-        return this.db.any("SELECT * FROM product WHERE product_type_id = 'ptdt' AND product_name like '%$1#%'", name);
+        return this.db.any("SELECT * FROM product WHERE product_type_id = 'ptdt' AND product_name ILIKE '%$1#%'", name);
     }
     selectHot(max) {
         return this.db.many("SELECT * FROM product WHERE product_type_id = 'ptdt' ORDER BY sales_volume DESC LIMIT $1", max);
