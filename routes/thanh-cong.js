@@ -1,7 +1,8 @@
-const {db, } = require('../pgp');
+const { db, } = require('../pgp');
 const shortid = require('shortid');
 
 const Product = require('../models/products');
+const PriceConverter = require('../models/priceConvert');
 
 const product = new Product(db);
 
@@ -9,17 +10,17 @@ let log = console.log;
 
 function getFormattedDate() {
     var date = new Date();
-    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
     return str;
 }
 
 module.exports = function (express) {
-	const router = express.Router();
+    const router = express.Router();
 
-	router.post('/', (req, res) => {
+    router.post('/', (req, res) => {
 
-	    //log(req.body);
+        //log(req.body);
         let idClient = req.cookies['cart'];
         let cart = req.session.cart;
         let ids = '';
@@ -49,16 +50,26 @@ module.exports = function (express) {
         })
             .then(data => {
                 let total = 0;
-                data[0].forEach((item) => {
-                    total = total + (item.price * data[1][item.product_id]);
+                let allProducts = data[0];
+                let orderData;
+                let cart = data[1];
+
+                allProducts.forEach((item) => {
+                    total = total + (item.price * cart[item.product_id]);
                 });
-                //log(data[1])
-                if(req.body['thanhtoan']) {
-                    if(req.body['name'] && req.body['phone'] && req.body['email'] && req.body['address'] && req.body['method']){
+
+                if (req.body['thanhtoan']) {
+                    if (req.body['name'] && req.body['phone'] && req.body['email'] && req.body['address'] && req.body['method']) {
                         let order_id = shortid.generate();
-                        let val = {
+
+                        let user_id = null;
+                        if (req.session.user) {
+                            user_id = req.session.user.user_id;
+                        }
+
+                        orderData = {
                             id: order_id,
-                            user_id: '1',
+                            user_id: user_id,
                             name: req.body['name'],
                             phone: req.body['phone'],
                             email: req.body['email'],
@@ -71,25 +82,62 @@ module.exports = function (express) {
                             delivery_date: '0000-00-00 00:00:00',
                             total: total
                         };
-                        //log('INSERT INTO orders VALUES(' + val.id + ', ' + val.user_id + ', ' + val.name + ', ' + val.phone + ', ' + val.email + ', ' + val.address + ', ' + val.note + ', ' + val.status + ', ' + val.total + ', ' + val.method + ', ' + val.order_date + ', ' + val.delivery_date + ')');
-                        
+
+                        // create an array of all products to be inserted into detailed_orders table
+                        let allProductsArr = [];
+
                         db.query("INSERT INTO orders (orders_id, user_id, name, phone, email, address, note, status, total, method, order_date, delivery_date)" +
-                            "VALUES($(id), ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date})", val)
-                            .then((data) => {
-                            log(data);
-                            res.render('thanh-cong.html', {
-                                title: 'Đặt hàng thành công',
-                                idClient: idClient
+                            "VALUES(${id}, ${user_id}, ${name}, ${phone}, ${email}, ${address}, ${note}, ${status}, ${total}, ${method}, ${order_date}, ${delivery_date}) RETURNING orders_id", orderData)
+                            .then((returned_orders_id) => {
+                                // returned_orders_id is actually an array of object [ anonymous { orders_id: 'Syl60xDeb' } ]
+                                // insert into detailed_orders
+                                allProducts.forEach(item => {
+                                    let id = shortid.generate();
+                                    let eachProduct = {
+                                        detailed_orders_id: id,
+                                        orders_id: returned_orders_id[0].orders_id,
+                                        product_id: item.product_id,
+                                        quantity: cart[item.product_id],
+                                        price: item.price
+                                    }
+                                    allProductsArr.push(eachProduct);
+                                    // insert each product into detailed_orders
+                                    db.query("INSERT INTO detailed_orders (detailed_orders_id, orders_id, product_id, quantity, price) VALUES(${detailed_orders_id}, ${orders_id}, ${product_id}, ${quantity}, ${price})", eachProduct);
+                                });
+                            })
+                            .then(data => {
+                                //console.log(orderData);
+                                //console.log(allProducts);
+                                //console.log(total);
+                                // Remove session cookies 
+                                req.cookies['cart'] // = session_user_id in cart table
+                                db.query("DELETE from carts WHERE session_user_id = $1", req.cookies['cart']);
+                                req.session.cart = {};
+                                // render page
+                                allProducts.forEach(eachProduct => {
+                                    eachProduct.total = cart[eachProduct.product_id] * eachProduct.price;
+                                    eachProduct.total = PriceConverter(eachProduct.total);
+                                    eachProduct.price = PriceConverter(eachProduct.price);
+                                });
+                                total = PriceConverter(total);
+                                res.render('thanh-cong.html', {
+                                    title: 'Đặt hàng thành công',
+                                    orderData: orderData,
+                                    products: allProducts,
+                                    cart: cart,
+                                    total: total
+
+                                });
+                            })
+
+                            .catch(error => {
+                                res.json({
+                                    success: false,
+                                    error: error.message || error
+                                });
                             });
-                        })
-                        .catch(error => {
-                            res.json({
-                                success: false,
-                                error: error.message || error
-                            });
-                        });
                     }
-                }else {
+                } else {
                     window.location.replace("/gio-hang/");
                 }
             })
@@ -99,7 +147,7 @@ module.exports = function (express) {
                     error: error.message || error
                 });
             });
-	});
+    });
 
-	return router;
+    return router;
 };

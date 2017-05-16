@@ -25,7 +25,7 @@ module.exports = function (express) {
                                 console.log('Insert account successfully');
                                 req.session.login = true;
                                 req.session.user = data;
-                                console.log(req.session);
+                                //console.log(req.session);
                                 req.flash('success', 'You sign up successfully!');
                                 res.render('tai-khoan', {login: req.session.login, user: req.session.user });
                             })
@@ -47,7 +47,7 @@ module.exports = function (express) {
 
     // handle sign in request
     router.post('/log-in', (req, res) => {
-        console.log(req.body);
+        //console.log(req.body);
         user.selectUser(req.body.email)
             .then(data => {
                 if (data === null) {
@@ -67,7 +67,7 @@ module.exports = function (express) {
                             gender: data.gender,
                             address: data.address
                         };
-                        console.log(req.session);
+                        //console.log(req.session);
                         req.flash('success', 'You log in successfully!');
                         res.render('tai-khoan', { login: req.session.login, user: req.session.user });
                     } else {
@@ -98,7 +98,7 @@ module.exports = function (express) {
         req.session.login = false;
         delete req.session.user;
         console.log('Log out');
-        console.log(req.session);
+        //console.log(req.session);
         req.flash('error', 'User is logged out');
         res.status(401).render('index', {login: req.session.login});
     });

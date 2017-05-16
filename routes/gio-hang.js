@@ -56,7 +56,7 @@ module.exports = function (express) {
                 db.none('INSERT INTO carts(session_user_id, product_id, qty) VALUES(${session_user_id}, ${product_id}, ${qty})', cart_insert)
                     .then(() => {
                         console.log('Insert Success');
-                        console.log(req.header('referrer'));
+                        //console.log(req.header('referrer'));
                         res.redirect(req.header('referrer'));
                     })
                     .catch(error => {

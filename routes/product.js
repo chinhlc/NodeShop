@@ -26,7 +26,7 @@ module.exports = function (express) {
         if (q != undefined && q > 0) {
             pgfrom = (pgfrom + q - 1) * n;
         } else {
-            q = 0;
+            q = 1;
         }
         //
         let price = req.query.gia;

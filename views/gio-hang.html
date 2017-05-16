@@ -33,9 +33,9 @@
 									<tr>
 										<td>{{ loop.index }}</td>
 										{% if (item.product_type_id == 'ptdt')%}
-										<td class="img_cart"><img src="images/products/{{ item.product_id }}_0.jpg"></td>
+										<td class="img_cart"><img src="/images/products/{{ item.product_id }}_0.jpg"></td>
 										{% else %}
-										<td class="img_cart"><img src="images/phukien/{{ item.product_id }}_0.jpg"></td>
+										<td class="img_cart"><img src="/images/phukien/{{ item.product_id }}_0.jpg"></td>
 										{% endif %}
 										<td>{{ item.product_name }}</td>
 										<td>{{ item.price }} VNĐ</td>
@@ -54,9 +54,9 @@
 						<tfoot>
 							<tr>
 								<td colspan="7">
-									<a href="/dien-thoai" name="capnhat" class="btn btn-danger" role="button">Tiếp tục mua hàng</a>
+									<a href="/dien-thoai" name="capnhat" class="btn btn-success" role="button">Tiếp tục mua hàng</a>
 									{% if cart %}
-									<input type="submit" value="Cập nhật" name="capnhat" class="btn btn-success" role="button">
+									<input type="submit" value="Cập nhật" name="capnhat" class="btn btn-danger" role="button">
 									{% endif %}
 								</td>
 							</tr>
