@@ -126,6 +126,8 @@ module.exports = function (express) {
 
                                 res.render('thanh-cong.html', {
                                     title: 'Đặt hàng thành công',
+                                    login: req.session.login,
+                                    user: req.session.user,
                                     orderData: orderData,
                                     products: allProducts,
                                     cart: cart,

@@ -24,4 +24,14 @@ http://localhost:3002
 #### 16/05/2017
 * Update thanh-cong.html: display customers order detail
 * Display orders from databse in admin page
-* Change detailed_orders table to include product name and product type id -> display info in admin panel more easily 
+* Change detailed_orders table to include product name and product type id -> display info in admin panel more easily
+
+#### 17 - 18/05/2017
+* Show sales, inventory data in charts 
+* Display users, products in admin panel  
+
+#### 19/05/2017
+* Accessory routing
+* Add phone column to user_account table - update table, change sign-up form
+* Add edit-user and edit-user-pass post requests which allow users update info and change password in tai-khoan.html
+

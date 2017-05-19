@@ -15,27 +15,19 @@
 			<ul>
 				<li class="menu-box"><span class="title-list sap-xep-title">SẮP XẾP</span>
 					<ul class="sap-xep">
-						<li><a href="/dien-thoai/?order=newest">Mới nhất</a></li>
-						<li><a href="/dien-thoai/?order=hotest">Bán chạy nhất</a></li>
-						<li><a href="/dien-thoai/?order=lowtohigh">Gía: thấp -> cao</a></li>
-						<li><a href="/dien-thoai/?order=hightolow">Giá: cao -> thấp</a></li>
-						<!--<li><a href="/dien-thoai/?order=promotion">Khuyến mại</a></li>-->
-					</ul>
-				</li>
-				<li class="menu-box"><span class="title-list nhan-hieu-title">HÃNG SẢN XUẤT</span>
-					<ul class="nhan-hieu">
-						<li><a href="/hang-dien-thoai/apple">APPLE</a></li>
-						<li><a href="/hang-dien-thoai/samsung">SAMSUNG</a></li>
-						<li><a href="/hang-dien-thoai/oppo">OPPO</a></li>
-						<li><a href="/hang-dien-thoai/cac-hang-khac">Các hãng khác</a></li>
+						<li><a href="/phu-kien/?order=newest">Mới nhất</a></li>
+						<li><a href="/phu-kien/?order=hotest">Bán chạy nhất</a></li>
+						<li><a href="/phu-kien/?order=lowtohigh">Gía: thấp -> cao</a></li>
+						<li><a href="/phu-kien/?order=hightolow">Giá: cao -> thấp</a></li>
+						<!--<li><a href="/phu-kien/?order=promotion">Khuyến mại</a></li>-->
 					</ul>
 				</li>
 				<li class="menu-box"><span class="title-list gia-tien-title">GIÁ TIỀN</span>
 					<ul class="gia-tien">
-						<li><a href="/dien-thoai/?gia=den5">Dưới 5 Triệu</a></li>
-						<li><a href="/dien-thoai/?gia=5den10">Từ 5 đến 10 triệu</a></li>
-						<li><a href="/dien-thoai/?gia=10den15">Từ 10 đến 15 triệu</a></li>
-						<li><a href="/dien-thoai/?gia=tren15">Trên 15 triệu</a></li>
+						<li><a href="/phu-kien/?gia=den5">Dưới 5 Triệu</a></li>
+						<li><a href="/phu-kien/?gia=5den10">Từ 5 đến 10 triệu</a></li>
+						<li><a href="/phu-kien/?gia=10den15">Từ 10 đến 15 triệu</a></li>
+						<li><a href="/phu-kien/?gia=tren15">Trên 15 triệu</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -76,18 +68,28 @@
 
 		<div class="col-md-12 pagination-box">
 			<ul class="pagination">
-					<li><a href="?page=1" {% if (pageCurrent < 1) %} class="noclick" {% endif %}>Trang đầu</a></li>
-					{% for i in range(1, allpage + 1) %}
-						{% if (pageCurrent > 0) %}
-							<li 3 {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{ i }}">{{ i }}</a></li>
-						{% elif (i === 1) %}
-							<li 1 class="active"><a href="?page={{ i }}">{{ i }}</a></li>
+				{% if pageQuery %}
+					{% for i in range(1, allpage+1) %}
+						{% if loop.first %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">Trang đầu</a></li>
+						{% elif loop.last %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">Trang cuối</a></li>
 						{% else %}
-							<li 2><a href="?page={{ i }}">{{ i }}</a></li>
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="{{pageQuery}}&page={{i}}">{{i}}</a></li>
 						{% endif %}
 					{% endfor %}
-					<li><a href="?page={{ allpage }}">Trang cuối</a></li>
-				  </ul>
+				{% else %}
+					{% for i in range(1, allpage+1) %}
+						{% if loop.first %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">Trang đầu</a></li>
+						{% elif loop.last %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">Trang cuối</a></li>
+						{% else %}
+							<li {% if(pageCurrent == i) %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a></li>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</ul>
 		</div>
 		<!-- end col -->
 		<!-- end col -->

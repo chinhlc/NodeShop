@@ -1,13 +1,13 @@
 const { db, } = require('../pgp');
 
+const Accessory = require('../models/accessory');
 const Category = require('../models/category');
 const Image = require('../models/images');
-const Accessory = require('../models/accessory');
 const PriceConverter = require('../models/priceConvert');
 
+const accessory = new Accessory(db);
 const cate = new Category(db);
 const image = new Image(db);
-const accessory = new Accessory(db);
 
 let log = console.log;
 
@@ -15,57 +15,45 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/', (req, res) => {
-
+        
         if (req.session.login === undefined) {
             req.session.login = false;
         }
-        
-        // pagination
+
         let q = req.query.page;
         let n = 9;
         let pgfrom = 0;
         if (q != undefined && q > 0) {
             pgfrom = (pgfrom + q - 1) * n;
         } else {
-            q = 0;
+            q = 1;
         }
+        //
+        let price = req.query.gia;
         let order = req.query.order;
+        //
         db.task(t => {
-            if (order !== undefined) {
-                switch (order) {
-                    case 'newest':
-                        return t.batch([
-                            accessory.selectByNewest(n, pgfrom),
-                            accessory.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'hotest':
-                        return t.batch([
-                            accessory.selectBySales(n, pgfrom),
-                            accessory.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'hightolow':
-                        return t.batch([
-                            accessory.selectByPriceDesc(n, pgfrom),
-                            accessory.countAll(),
-                            q
-                        ])
-                        break;
-                    case 'lowtohigh':
-                        return t.batch([
-                            accessory.selectByPriceAsc(n, pgfrom),
-                            accessory.countAll(),
-                            q
-                        ])
-                }
+            if (price !== undefined) {
+                let productData = accessory.selectByPriceRange2(price, n, pgfrom);
+                return t.batch([
+                    productData[0],
+                    productData[1],
+                    q,
+                    '?gia=' + price
+                ]);
+            } else if (order !== undefined) {
+                let productData = accessory.selectByOrder(order, n, pgfrom);
+                return t.batch([
+                    productData[0],
+                    productData[1],
+                    q,
+                    '?order=' + order
+                ]);
             } else {
                 return t.batch([
                     accessory.selectByPagination(n, pgfrom),
                     accessory.countAll(),
-                    q
+                    q,
                 ]);
             }
         })
@@ -84,13 +72,14 @@ module.exports = function (express) {
                 });
                 //
                 res.render('danh-sach-pk.html', {
-                    pageTitle: 'Phụ Kiện',
+                    pageTitle: 'Điện thoại',
                     login: req.session.login,
                     user: req.session.user,
                     products: data[0],
                     countAll: data[1],
                     allpage: page,
-                    pageCurrent: q
+                    pageCurrent: q,
+                    pageQuery: data[3]
                 });
             })
             .catch(error => {
@@ -108,7 +97,6 @@ module.exports = function (express) {
         }
         
         let id = req.params.id;
-
         db.task(t => {
             return t.batch([
                 accessory.detail(id),
@@ -124,7 +112,7 @@ module.exports = function (express) {
                 });
                 //
                 res.render('chi-tiet-pk.html', {
-                    pagetitle: 'Phụ Kiện',
+                    pageTitle: 'Điện Thoại',
                     login: req.session.login,
                     user: req.session.user,
                     detail: data[0],
@@ -139,7 +127,6 @@ module.exports = function (express) {
                 });
             });
     });
-
 
     return router
 };
