@@ -15,7 +15,9 @@ module.exports = function (express) {
     const router = express.Router();
 
     router.get('/', (req, res) => {
-        
+        //
+        let total1 = req.session.total;
+        //
         if (req.session.login === undefined) {
             req.session.login = false;
         }
@@ -75,6 +77,7 @@ module.exports = function (express) {
                     pageTitle: 'Điện thoại',
                     login: req.session.login,
                     user: req.session.user,
+                    total1: req.session.total,
                     products: data[0],
                     countAll: data[1],
                     allpage: page,
@@ -95,7 +98,9 @@ module.exports = function (express) {
         if (req.session.login === undefined) {
             req.session.login = false;
         }
-        
+        //
+        let total1 = req.session.total;
+        //
         let id = req.params.id;
         db.task(t => {
             return t.batch([
@@ -115,6 +120,7 @@ module.exports = function (express) {
                     pageTitle: 'Điện Thoại',
                     login: req.session.login,
                     user: req.session.user,
+                    total1: req.session.total,
                     detail: data[0],
                     images: data[1],
                     productSimilar: data[2]
