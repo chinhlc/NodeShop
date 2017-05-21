@@ -19,6 +19,20 @@ module.exports = function (express, cart) {
 
 
     router.get('/', (req, res, next) => {
+             
+        //===tinh tong cac so luong sp co trong gio hang
+        let idClient = req.cookies['cart'];
+        let cart = req.session.cart;
+        let total1=0;
+
+        for (var item in cart) {
+
+            total1 += parseInt(cart[item]);
+        }
+        //console.log(total1);
+        req.session.total=total1;
+
+        
         // check if user is logged in -> if not assign req.session.login = false
         if (req.session.login === undefined) {
             req.session.login = false;
@@ -49,6 +63,7 @@ module.exports = function (express, cart) {
                     pageTitle: 'Trang chủ',
                     login: req.session.login,
                     user: req.session.user,
+                    total1: req.session.total,
                     productHot: data[0],
                     productNew: data[1],
                     accessoryHot: data[2]
@@ -71,6 +86,7 @@ module.exports = function (express, cart) {
                 res.render('danh-sach.html', {
                     pageTitle: 'Tìm Kiếm',
                     user: req.session.user,
+                    total1: req.session.total,
                     products: data
                 });
             })
