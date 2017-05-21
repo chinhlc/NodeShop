@@ -42,7 +42,7 @@
 										<td><input type="number" class="" min="0" name="{{ item.product_id }}" value="{{ cart[item.product_id] }}"></td>
 										<td>{{ item.total }} VNĐ</td>
 										<!--delete product in shopping cart-->
-										<td><span class="del"><img src="../images/del.png"</span></td> 
+										<td class="remove"><div>&times</div></td>
 									</tr>
 								{% endfor %}
 							{% else %}
