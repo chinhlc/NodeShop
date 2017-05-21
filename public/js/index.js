@@ -35,11 +35,11 @@ $(document).ready(function () {
         $(".online-payment-content").toggleClass("appear");
     });
 
-
-    $(".del").click(function () {
-        $(".product-selected").css("display", "none");
+    $(".remove > div").click(function() {
+        $(this).parents("td").parents("tr").remove();
+        changed();
     });
-
+   
     $(".logged").click(function () {
         $(".logged-box").toggleClass("appear");
     });
