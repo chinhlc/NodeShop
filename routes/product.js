@@ -98,7 +98,9 @@ module.exports = function (express) {
         if (req.session.login === undefined) {
             req.session.login = false;
         }
-        
+        //
+        let total1 = req.session.total;
+        //
         let id = req.params.id;
         db.task(t => {
             return t.batch([
