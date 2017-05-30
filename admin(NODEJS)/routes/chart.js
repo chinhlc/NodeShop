@@ -1,7 +1,9 @@
 const { db, } = require('../pgp');
 const Product = require('../models/product.js');
+const Order = require('../models/order.js');
 
 const product = new Product(db);
+const order = new Order(db);
 
 module.exports = function (express) {
     const router = express.Router();
@@ -60,5 +62,19 @@ module.exports = function (express) {
         })
     });
 
+    router.get('/doanh-thu', (req, res) => {
+        order.countMonthlyRevenue()
+            .then((data) => {
+                let lineData = data.map(obj => {
+                    let returnArr = [];
+                    returnArr[0] = parseInt(obj.founded_month);
+                    returnArr[1] = obj.month_revenue;
+                    return returnArr;
+                });
+
+                res.render('flot-doanh-thu.html', {lineData: lineData});
+            });
+        
+    });
     return router;
 }
